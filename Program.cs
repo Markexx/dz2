@@ -1,17 +1,19 @@
-﻿using dz2___2._zadatak;
-class Program
+﻿using dz2;
+
+public class Program
 {
     static void Main(string[] args)
     {
-        LoginPageFactory factory = new ChromeLoginPageFactory();
-        LoginPage page = factory.CreatePage();
+        IMailConstructor mailConstructor = new MailConstructor();
 
-        WebElement loginButton = page.loginButton();
-        WebElement usernameInput = page.usernameInput();
-        WebElement passwordInput = page.passwordInput();
+        Mail mail = mailConstructor
+            .AddSubject("Test Subject")
+            .AddContent("This is the content of the email.")
+            .Construct();
 
-        loginButton.Click();
-        usernameInput.Click();
-        passwordInput.Click();
+        SMTP smtp = new SMTP(mailConstructor);
+        smtp.SendNoReplyMail();
     }
 }
+
+
